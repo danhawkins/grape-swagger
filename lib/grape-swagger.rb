@@ -178,17 +178,29 @@ module Grape
 
                 dataType    = value.is_a?(Hash) ? (value[:type] || 'String').to_s : 'String'
                 description = value.is_a?(Hash) ? value[:desc] || value[:description] : ''
+                if value[:values]
+                  values    = value[:values]
+                end
                 required    = value.is_a?(Hash) ? !!value[:required] : false
                 paramType   = path.include?(":#{param}") ? 'path' : (method == 'POST') ? 'form' : 'query'
                 name        = (value.is_a?(Hash) && value[:full_name]) || param
                 
-                {
+                param_hash = {
                   paramType:    paramType,
                   name:         name,
                   description:  as_markdown(description),
                   type:         dataType,
                   required:     required
                 }
+
+                if value[:values]
+                  param_hash[:allowableValues] = {
+                    valueType: 'LIST',
+                    values: value[:values]
+                  }
+                end
+
+                param_hash
               end
             end
             
