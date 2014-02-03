@@ -190,7 +190,7 @@ module Grape
                   required:     required
                 }
 
-                if value[:values]
+                if value.is_a?(Hash) && value.has_key?(:values)
                   param_hash[:allowableValues] = {
                     valueType: 'LIST',
                     values: (value[:values].is_a?(Proc) ? value[:values].call : value[:values])
