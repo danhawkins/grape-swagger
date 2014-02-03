@@ -193,7 +193,7 @@ module Grape
                 if value[:values]
                   param_hash[:allowableValues] = {
                     valueType: 'LIST',
-                    values: value[:values]
+                    values: (value[:values].is_a?(Proc) ? value[:values].call : value[:values])
                   }
                 end
 
